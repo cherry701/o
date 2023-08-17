@@ -1,0 +1,98 @@
+#include<stdio.h>
+int i, j, n, r, flag, p[30], all[30][30], max[30][30], need[30][30], ava[10], work[30],
+finish[30], safe_seq[30];
+void read()
+{
+for(i = 0 ; i < n ; i++)
+{
+printf("\nEnter Process ID : ");
+scanf("%d", &p[i]);
+printf("\nEnter Allocation for Process-%d : ", p[i]);
+for(j = 0 ; j < r ; j++)
+{
+scanf("%d", &all[i][j]);
+}
+printf("\nEnter Max for Process-%d : ", p[i]);
+for(j = 0 ; j < r ; j++)
+{
+scanf("%d", &max[i][j]);
+}
+}
+printf("\nEnter Available Resources : ");
+for(i = 0 ; i < r ; i++)
+{
+scanf("%d", &ava[i]);
+work[i] = ava[i];
+}
+}
+void Find_Need()
+{
+for(i = 0 ; i < n ; i++)
+{
+for(j = 0 ; j < r ; j++)
+{
+need[i][j] = max[i][j] - all[i][j];
+}
+}
+}
+void Banker_Algo()
+{
+int k = 0, c;
+for(i=0 ; i <n ; i++)
+{
+finish[i]= 0;
+}
+for(c=0 ; c<n ; c++)
+{
+for(i=0 ; i <n ; i++)
+{
+if(finish[i] == 0) {
+flag= 0;
+for(j=0 ; j<r ; j++)
+{
+if(need[i][j]> work[j])
+{
+flag= 1;
+break;
+}
+}
+if(flag == 0) {
+safe_seq[k++]= p[i];
+for(j=0 ; j<r ; j++)
+work[j] += all[i][j];
+finish[i]= 1;
+}
+}
+}
+}
+}
+void Safe_Sequence() {
+flag= 1;
+for(i=0 ; i <n ; i++)
+{
+if(finish[i] == 0) {
+flag= 0;
+printf("\nSystem is in an Unsafe state ");
+break;
+}
+}
+if(flag == 1) {
+printf("\n\nSystem is in Safe state \nSafe Sequence : ");
+for(i = 0 ; i < n - 1 ; i++)
+{
+printf("P%d -> ", safe_seq[i]);
+}
+printf("P%d", safe_seq[i]);
+}
+}
+void main()
+{
+printf("\nEnter Number of Processes : ");
+scanf("%d", &n);
+printf("\nEnter Number of Resources : ");
+scanf("%d", &r);
+read();
+Find_Need();
+Banker_Algo();
+Safe_Sequence();
+}
