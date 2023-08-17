@@ -1,0 +1,86 @@
+#include<stdio.h>
+int i, n, j;
+struct process
+{
+int id, at, bt, ct, tat, wt;
+};
+struct process p[30];
+void read()
+{
+printf("\n");
+for(i = 0 ; i < n ; i++)
+{
+printf("\nEnter Process ID, Arrival Time & Burst Time for Process - %d : ", ( i + 1));
+scanf("%d %d %d", &p[i].id, &p[i].at, &p[i].bt);
+}
+}
+void display()
+{
+float tot_tat = 0.0, tot_wt = 0.0;
+printf("\n\nProcess ID Arrival Time Burst Time Completion TimeTurnaround Time Waiting Time");
+for(i = 0 ; i < n ; i++)
+{
+printf("\n");
+printf(" P%d ", p[i].id);// 14 spaces
+printf("%d ", p[i].at);// 19 spaces
+printf("%d ", p[i].bt);// 15 spaces
+printf("%d ", p[i].ct);// 20 spaces
+printf("%d ", p[i].tat);// 18 spaces
+printf("%d", p[i].wt);
+tot_tat = tot_tat + p[i].tat;
+tot_wt = tot_wt + p[i].wt;
+}
+printf("\n\nAverage Turnaround Time = %.2f ", ( tot_tat / n ));
+printf("\nAverage Waiting Time = %.2f ", ( tot_wt / n ));
+}
+void sort()
+{
+struct process t;
+for(i=0 ; i <n-1 ; i++)
+{
+for(j=0 ; j<n-1- i ; j++)
+{
+if(p[j].at> p[j+ 1].at)
+{
+t= p[j];p[j]= p[j+ 1];
+p[j+ 1]= t;
+}
+}
+}
+}
+void Find_Completion_Time() {
+int temp;
+p[0].ct= p[0].at+ p[0].bt;
+for(i=1 ; i <n ; i++)
+{
+//when the process is ideal in" between i and i +1"
+temp= 0;
+if(p[i- 1].ct< p[i].at)
+{
+temp= p[i].at- p[i- 1].ct;
+}
+p[i].ct= p[i- 1].ct+ p[i].bt+ temp;
+}
+}
+void Find_Turnaround_Time() {
+for(i=0 ; i <n ; i++)
+{
+p[i].tat= p[i].ct- p[i].at;
+}
+}
+void Find_Waiting_Time() {
+for(i=0 ; i <n ; i++)
+{
+p[i].wt= p[i].tat- p[i].bt;
+}
+}
+void main() {
+printf("\nEnter Number of Processes : ");
+scanf("%d", &n);
+read();
+sort();
+Find_Completion_Time();
+Find_Turnaround_Time();
+Find_Waiting_Time();
+display();
+}
