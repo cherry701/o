@@ -1,0 +1,134 @@
+#include<stdio.h>
+int nb, np, bn[30], bs[30], pn[30], ps[30], i, j, occ[30], all[30], fra[30];
+void read()
+{
+printf("\nEnter Number of Block's : ");
+scanf("%d", &nb);
+for(i = 1 ; i <= nb ; i++)
+{
+printf("\nEnter Block Number & size : ");
+scanf("%d %d", &bn[i], &bs[i]);
+occ[i] = 0;
+}
+printf("\nEnter Number of Processes : ");
+scanf("%d", &np);
+for(i = 1 ; i <= np ; i++)
+{
+printf("\nEnter Process Number & size : ");
+scanf("%d %d", &pn[i], &ps[i]);
+all[i] = -1;
+}
+}
+void First_Fit()
+{
+for(i = 1 ; i <= np ; i++)
+{
+for(j = 1 ; j <= nb ; j++)
+{
+if(occ[j] == 0 && bs[j] >= ps[i])
+{
+all[i] = bn[j];
+fra[i] = bs[j] - ps[i];
+occ[j] = 1;
+break;
+}
+}
+}
+}
+void Best_Fit()
+{
+int index;
+for(i=1 ; i <= np ; i++)
+{
+index= -1;
+for(j=1 ; j <= nb ; j++)
+{
+if(occ[j] ==0 && bs[j] >= ps[i])
+{
+if(index == -1) {
+index= j;
+}
+else if(bs[j]< bs[index])
+{
+index= j;
+}
+}
+}
+if(index != -1) {
+all[i]= bn[index];
+fra[i]= bs[index]- ps[i];
+occ[index]= 1;
+}
+}
+}
+void Worst_Fit()
+{
+int index;
+for(i=1 ; i <= np ; i++)
+{
+index= -1;
+for(j=1 ; j <= nb ; j++)
+{
+if(occ[j] ==0 && bs[j] >= ps[i])
+{
+if(index == -1) {
+index= j;
+}
+else if(bs[j]> bs[index])
+{
+index= j;
+}
+}
+}
+if(index != -1)
+{
+all[i] = bn[index];
+fra[i] = bs[index] - ps[i];
+occ[index] = 1;
+}
+}
+}
+void display()
+{
+printf("\n\nProcess.No Process Size Block.No Block Size Fragment");
+for(i = 1 ; i <= np ; i++)
+{
+printf("\n");
+printf(" P%d ", i); // 14 spaces
+printf("%d ", ps[i]); // 12 spaces
+if(all[i] != -1)
+{
+printf(" B%d ", all[i]); // 12 spaces
+printf("%d ", bs[ all[i] ]); // 12 spaces
+printf("%d", fra[i]);
+}
+else
+{
+printf("Not.All");
+}
+}
+}
+void main()
+{
+int ch;
+printf("\nContinguous Memory Allocation Techniques :- \n1. First Fit \n2. Best Fit
+\n3. Worst Fit \n");
+printf("\nEnter your choice : ");
+scanf("%d", &ch);
+read();
+switch(ch)
+{
+case 1 : First_Fit();
+display();
+break;
+case 2 : Best_Fit();
+display();
+break;
+case
+3 : Worst_Fit();
+display();
+break;
+default : printf("\nEnter
+a valid choice ");
+}
+}
