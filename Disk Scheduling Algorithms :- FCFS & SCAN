@@ -1,0 +1,108 @@
+#include<stdio.h>
+#include<stdlib.h>
+int n, size, move, disc_req[100], i, j, ind, initial_pos, tot_head_movement = 0;
+void read()
+{
+printf("\nEnter Number of Disk Requests : ");
+scanf("%d", &n);
+printf("\nEnter Disk Requests Sequence : \n");
+for(i = 0 ; i < n ; i++)
+{
+scanf("%d", &disc_req[i]);
+}
+printf("\nEnter Initial Head Position : ");
+scanf("%d", &initial_pos);
+}
+void FCFS()
+{
+printf("\n ");
+for(i = 0 ; i < n ; i++)
+{
+tot_head_movement = tot_head_movement + abs(initial_pos - disc_req[i]);
+initial_pos = disc_req[i];
+}
+printf("\nTotal Head Movements = %d ", tot_head_movement);
+}
+void sort()
+{
+int t;
+for(i = 0 ; i < n - 1 ; i++)
+{
+for(j = 0 ; j < n - 1 - i ; j++)
+{
+if(disc_req[j] > disc_req[j + 1])
+{
+t = disc_req[j];
+disc_req[j] = disc_req[j + 1];
+disc_req[j + 1] = t;
+}
+}
+}
+}
+void SCAN()
+{
+i = 0;
+// For finding the Initial Head Position index
+while(disc_req[i] <= initial_pos)
+{
+ind = i;
+i++;
+}
+// If the movement is towards high value
+if(move == 1)
+{
+for(i = ind + 1 ; i < n ; i++)
+{
+tot_head_movement = tot_head_movement + abs(initial_pos - disc_req[i]);
+initial_pos = disc_req[i];
+}
+// Last movement for max size
+tot_head_movement = tot_head_movement + abs( (size - 1) - disc_req[i - 1] );
+initial_pos = size - 1;
+for(i = ind ; i >= 0 ; i--)
+{
+tot_head_movement = tot_head_movement + abs(initial_pos - disc_req[i]);
+initial_pos = disc_req[i];
+}
+}
+// If the movement is towards low value
+else
+{
+for(i = ind ; i >= 0 ; i--)
+{
+tot_head_movement = tot_head_movement + abs(initial_pos - disc_req[i]);
+initial_pos = disc_req[i];
+}
+// Last movement for min size
+tot_head_movement = tot_head_movement + abs(disc_req[i + 1] - 0);
+initial_pos = 0;
+for(i = ind + 1 ; i < n ; i++)
+{
+tot_head_movement = tot_head_movement + abs(initial_pos - disc_req[i]);
+initial_pos = disc_req[i];
+}
+}
+printf("\nTotal Head Movements = %d ", tot_head_movement);
+}
+void main()
+{
+int ch;
+printf("\nDisk Scheduling Algorithms \n1. FCFS \n2. SCAN\n");
+printf("\nEnter your choice : ");
+scanf("%d", &ch);
+read();
+switch(ch)
+{
+case 1 : FCFS();
+break;
+case 2 : printf("\nEnter Total Disk Size : ");
+scanf("%d", &size);
+printf("\nEnter Head Movement Direction \n1 for High(towards right) and 0
+for Low(towards left) : ");
+scanf("%d", &move);
+sort();
+SCAN();
+break;
+default : printf("\nEnter a valid choice!");
+}
+}
