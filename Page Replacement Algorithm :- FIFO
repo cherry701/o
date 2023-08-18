@@ -1,0 +1,55 @@
+#include<stdio.h>
+int pages, ref_str[30], res[10], frame, flag, page_fault, i, j;
+void read()
+{
+printf("\nEnter Number of Pages : ");
+scanf("%d", &pages);
+printf("\nEnter Reference String Values : \n");
+for(i = 0 ; i < pages ; i++)
+{
+scanf("%d", &ref_str[i]);
+}
+printf("\nEnter Number of Frames : ");
+scanf("%d", &frame);
+for(i = 0 ; i < frame ; i++)
+{
+res[i] = -1;
+}
+}
+void FIFO()
+{
+int k = 0;
+page_fault = 0;
+printf("\nPage Faults : ");
+for(i = 0 ; i < pages ; i++)
+{
+flag = 0;
+for(j = 0 ; j < frame ; j++)
+{
+if(ref_str[i] == res[j])
+{
+flag = 1;
+}
+}
+if(k == frame)
+{
+k = 0;
+}
+if(flag == 0)
+{
+res[k++] = ref_str[i];
+page_fault= page_fault+ 1;
+printf("\nFault %2d : ", page_fault);
+for(j=0 ; j< frame ; j++)
+{
+if(res[j] != -1)
+printf("%2d ", res[j]);
+}
+}
+}
+printf("\n\nTotal Page Faults= %d ", page_fault);
+}
+void main() {
+read();
+FIFO();
+}
